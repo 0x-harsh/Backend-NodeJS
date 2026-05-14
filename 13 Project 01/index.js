@@ -1,8 +1,13 @@
+const fs = require('fs')
 const express = require('express')
-const users = require("./MOCK_DATA.json")
+let users = require("./MOCK_DATA.json")
 
 const app = express()
 const PORT = 8000
+
+// middleware or plugin
+app.use(express.urlencoded({ extended: false }))
+// gets the urlencoded form data and puts this data into req.body
 
 app.get('/users', (req, res) => {
     const html = `
@@ -29,18 +34,41 @@ app.get('/api/users/:id', (req, res) => {
 })
 
 app.post('/api/users/', (req, res) => {
-    // todo: create new user
-    return res.json({ "status": "pending" })
+    const body = req.body
+    users.push({ ...body, id: users.length + 1 })
+    fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
+        return res.json({ "status": "success", id: users.length })
+    })
 })
 
 app.patch('/api/users/:id', (req, res) => {
-    // todo: edit the user with id
-    return res.json({ "status": "pending" })
+    const id = Number(req.params.id)
+    const dataToUpdate = req.body
+    const user = users.find(user => user.id === id)
+    if (user) {
+        users = users.filter(user => user.id != id)
+        users.push({ ...user, ...dataToUpdate })
+        fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
+            return res.json({ status: "success" })
+        })
+    } else {
+        res.send("user does not exist")
+    }
+
 })
 
 app.delete('/api/users/:id', (req, res) => {
-    // todo: delete the user with id
-    return res.json({ "status": "pending" })
+    const id = Number(req.params.id)
+    const body = req.body
+    const userToDelete = users.find(user => user.id === id)
+    if (userToDelete) {
+        users = users.filter(user => user.id != id)
+        fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
+            res.json({ status: "success" })
+        })
+    } else {
+        res.json({ status: "user does not exist" })
+    }
 })
 
 app.listen(PORT, (req, res) => {
