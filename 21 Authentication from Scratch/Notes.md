@@ -22,3 +22,8 @@ Client <--------------headers---------------> Server (generally used in REST api
 #### Express Flow
 Client --------> Auth Middleware ----------> Endpoint route
 Auth Middleware: checks for cookie value or uid, if valid calls next() else rejects the request
+
+### Components
+- Auth Service Map: Used to save session id with user data and get user data using id
+- Auth Middleware: Used to authorize a user using the userId.
+- Use Cookies to store data to the client side and get it from the client side
