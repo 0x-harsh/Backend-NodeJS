@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        input {
+            border: none;
+            border: 1px solid black;
+            border-radius: 4px;
+        }
+
+        input,
+        button {
+            padding: 12px;
+            width: 350px;
+        }
+
+        label {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Login</h1>
+    <% if(locals.error) { %>
+        <p>
+            <%=error%>
+        </p>
+        <% } %>
+            <form method="POST" action="/user/login">
+                <label for="email">
+                    <input type="email" name="email" placeholder="Email">
+                </label>
+                <label for="password">
+                    <input type="text" name="password" placeholder="Password">
+                </label>
+                <button type="submit">Login</button>
+            </form>
+</body>
+
+</html>
